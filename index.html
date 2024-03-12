@@ -3,9 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js" defer></script>
+    <title>To-Do List</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
 </head>
 <body>
-    
+    <div class="container">
+        <div id="box">
+            <div class="head">
+                <h1><span><i class="fa-solid fa-list"></i></span>TO-DO LIST</h1>
+                <div class="bottom">
+                    <div class="left">
+                        <input id="task-input" name="task-input" type="text" placeholder="Input Task">
+                        <button id="add-btn" onclick="addTask()">Add</button>
+                    </div>
+                    <div class="right">
+                    <select id="filters" name="filters">
+                        <option value="default"></option>
+                        <option value="newest">New > Old</option>
+                        <option value="oldest">Old > New</option>
+                    </select>
+                    </div>
+                </div>
+            </div>
+            <div class="main">
+                <ul id="list-container"><!--
+                    <li><p>This is my task This is my task This is my task This is my task This is my task This is my task This is my task This is my task This is my task This is my task This is my task This is my task</p><div class="buttons"><button class="edit"><i class="fa-solid fa-pen-to-square"></i></button><button class="delete">
+                        <i class="fa-solid fa-trash"></i></button></div></li>-->
+                    <li><p>This is my task 2</p><div class="buttons"><button class="edit"><i class="fa-solid fa-pen-to-square"></i></button><button class="delete"><i class="fa-solid fa-trash"></i></button></div></li>
+                    <li><p>This is my task 3</p><div class="buttons"><button class="edit"><i class="fa-solid fa-pen-to-square"></i></button><button class="delete"><i class="fa-solid fa-trash"></i></button></div></li>
+                   
+                </ul>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

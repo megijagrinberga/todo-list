@@ -1,0 +1,137 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Ubuntu", sans-serif; 
+    font-weight: bold;
+}
+
+.container{
+    background-image: linear-gradient(135deg, #F5D547, #DB3069); /*#1446A0, #EBEBD3, #3C3C3B*/
+    width: 100%;
+    min-height: 100vh;
+    position: absolute;
+}
+
+#box{
+    display: flex;
+    flex-direction: column;
+    width: 750px;
+    max-width: 750px;
+    padding-bottom: 20px;
+    background: rgba(255,255,255,0.85);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+    border-radius: 20px;
+}
+
+#box .head{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 30px 25px;
+}
+
+.head h1{
+    font-size: 24px;
+    color: #DB3069;
+    align-self: center;
+    user-select: none;
+}
+
+h1 span{
+    font-size: 22px;
+    margin-right: 10px;
+}
+
+.head .bottom{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 25px;
+}
+
+.bottom .left{
+    display: flex;
+    background-color: #FFFF;
+    border-radius: 15px;
+}
+
+#task-input, #filters, #add-btn{
+    border: none;
+    outline: none;
+    border-radius: 15px;
+    padding: 10px 15px;
+    font-size: 16px;
+    color: #3C3C3B;
+    font-weight: normal;
+}
+
+#filters, #add-btn{
+    cursor: pointer;
+}
+
+option{
+    font-weight: normal;
+    font-size: 14px;
+}
+
+#task-input{
+    border-bottom-left-radius: 0;
+    background-color: transparent;
+}
+
+#add-btn{
+    color: #FFFF;
+    font-weight: bold;
+    background-color: #DB3069; /*#1446A0;*/
+    border-top-left-radius: 0;
+    border-bottom-right-radius: 5px;
+}
+
+#add-btn:hover{
+    background-color: #1446A0;
+}
+
+#box .main{
+    color:#3C3C3B;
+    font-weight: normal;
+    font-size: 20px;
+    width: 100%;
+    height: 100%;
+    padding-top: 0;
+}
+
+ul li{
+    display: flex;
+    list-style: none;
+    padding: 0 25px 20px 30px;
+    user-select: none;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+li p{ cursor: pointer;}
+
+.buttons{
+    display: flex;
+    gap: 10px;
+}
+
+.edit, .delete{
+    border: none;
+    background-color: #1446A0;
+    font-size: 14px;
+    color: white;
+    border-radius: 10px;
+    width: 30px;
+    max-width: 30px;
+    height: 30px;
+    max-height: 30px;
+    cursor: pointer;
+}
+
+.edit:hover, .delete:hover{
+    background-color:#DB3069;
+}

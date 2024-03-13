@@ -20,9 +20,7 @@
     max-width: 750px;
     padding-bottom: 20px;
     background: rgba(255,255,255,0.85);
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 100px;
+    margin: 100px auto 100px auto;
     border-radius: 20px;
 }
 
@@ -95,7 +93,7 @@ option{
 }
 
 #box .main{
-    color:#3C3C3B;
+    color:#DB3069;
     font-weight: normal;
     font-size: 20px;
     width: 100%;
@@ -112,14 +110,18 @@ ul li{
     justify-content: space-between;
 }
 
-li p{ cursor: pointer;}
+li p{
+    cursor: pointer;
+    word-wrap: break-word;
+    overflow: hidden;
+}
 
 .buttons{
     display: flex;
     gap: 10px;
 }
 
-.edit, .delete{
+.edit, .delete, .save, .cancel{
     border: none;
     background-color: #1446A0;
     font-size: 14px;
@@ -132,6 +134,11 @@ li p{ cursor: pointer;}
     cursor: pointer;
 }
 
-.edit:hover, .delete:hover{
+.edit:hover, .delete:hover, .save:hover, .cancel:hover{
     background-color:#DB3069;
+}
+
+.strikethrough{
+    text-decoration: line-through;
+    color: #1446A0;
 }

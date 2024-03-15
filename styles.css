@@ -123,6 +123,7 @@ li p{
 
 .edit, .delete, .save, .cancel{
     border: none;
+    outline: none;
     background-color: #1446A0;
     font-size: 14px;
     color: white;
@@ -141,4 +142,13 @@ li p{
 .strikethrough{
     text-decoration: line-through;
     color: #1446A0;
+}
+
+.edit-field{
+    border: none;
+    outline: none;
+    border-radius: 15px;
+    padding: 5px 10px;
+    color: #DB3069;
+    font-size: 18px;
 }

@@ -19,37 +19,88 @@ function addTask(){
 //So that you don't have to explicitly press the button if you want to add a task
 inputBox.addEventListener("keypress", (event)=>{if(event.key==="Enter") addTask();});
 
-taskList.addEventListener("click",(event)=>{
-    //if u press the btn w/ the class delete or the icon within the btn
-    if(event.target.classList.contains('delete') || event.target.parentElement.classList.contains('delete')){ 
-        //if the delete btn was a direct child of li, then u could simply do w/ event.target.parentElement.remove(), bet dzīvē viss ir savādāk :)
-        event.target.closest('li').remove();
+//TODO: reduce... redundancy...
+function toggleEditMode(listItem){
+    const editButton = listItem.querySelector('.edit');
+    const deleteButton = listItem.querySelector('.delete');
+    const editIcon = editButton.querySelector('i');
+    const deleteIcon = deleteButton.querySelector('i');
+    const taskText = listItem.querySelector('p');
+    const taskInputField = document.createElement('input');
+    
+    taskInputField.classList.add('edit-field');
+    taskInputField.type = 'text';
+    taskInputField.value = taskText.textContent;
+    
+    listItem.replaceChild(taskInputField, taskText);
+    taskInputField.focus();
+    
+    editIcon.classList.remove('fa-pen-to-square');
+    editIcon.classList.add('fa-check');
+    editButton.classList.remove('edit');
+    editButton.classList.add('save');
+    
+    deleteIcon.classList.remove('fa-trash');
+    deleteIcon.classList.add('fa-x');
+    deleteButton.classList.remove('delete');
+    deleteButton.classList.add('cancel');
+}
+
+function revertEditMode(listItem){
+    const editButton = listItem.querySelector('.save');
+    const deleteButton = listItem.querySelector('.cancel');
+    const editIcon = editButton.querySelector('i');
+    const deleteIcon = deleteButton.querySelector('i');
+    const taskText = document.createElement('p');
+    const taskInputField = listItem.querySelector('.edit-field');
+    
+
+    if(taskInputField.value.match(/^\s*$/)){alert("You must write something!");}
+    else{
+        taskText.textContent = taskInputField.value;
+        listItem.replaceChild(taskText, taskInputField);
+        editIcon.classList.remove('fa-check');
+        editIcon.classList.add('fa-pen-to-square');
+        editButton.classList.remove('save');
+        editButton.classList.add('edit');
+        
+        deleteIcon.classList.remove('fa-x');
+        deleteIcon.classList.add('fa-trash');
+        deleteButton.classList.remove('cancel');
+        deleteButton.classList.add('delete');
         saveTasks();
     }
-    else if (event.target.classList.contains('edit') || event.target.parentElement.classList.contains('edit')) {
-        //if the target has the class edit, then it's the btn. Otherwise it's the icon -> u gotta access the parent elem aka ze batn
-        const editButton = event.target.classList.contains('edit') ? event.target : event.target.parentElement;
-        const listItem = editButton.closest('li');
-        const deleteButton = listItem.querySelector('.delete');
-        //changing the icons
-        const editIcon = editButton.querySelector('i');
-        const deleteIcon = deleteButton.querySelector('i');
-        
-        editIcon.classList.remove('fa-pen-to-square');
-        editIcon.classList.add('fa-check');
-        deleteIcon.classList.remove('fa-trash');
-        deleteIcon.classList.add('fa-x');
-        //changing the classes
-        editButton.classList.remove('edit');
-        editButton.classList.add('save');
-        deleteButton.classList.remove('delete');
-        deleteButton.classList.add('cancel');
-      }
-    else if(event.target.tagName === 'P'){event.target.classList.toggle('strikethrough')}
+    
 }
-);
-//TODO: actually allow the user to edit task && (save xor cancel edit)
-//      sorting by added time for filtering
+
+taskList.addEventListener("click", (event) => {
+    const listItem = event.target.closest('li');
+    
+    switch (true) {
+        case event.target.classList.contains('delete') || event.target.parentElement.classList.contains('delete'):
+            listItem.remove();
+            saveTasks();
+            break;
+        case event.target.classList.contains('edit') || event.target.parentElement.classList.contains('edit'):
+            toggleEditMode(listItem);
+            break;
+        case event.target.classList.contains('save') || event.target.parentElement.classList.contains('save'):
+            revertEditMode(listItem);
+            break;
+       //TODO: fix this vvv
+       /* case event.target.classList.contains('cancel') || event.target.parentElement.classList.contains('cancel'):
+            revertEditMode(listItem);
+            break;*/
+        case event.target.tagName === 'P':
+            event.target.classList.toggle('strikethrough');
+            break;
+        default:
+            break;
+    }
+});
+
+//TODO (optional): add the added time && sorting by added time
+//TODO (optional): if clicked outside input box in edit mode -> cancel
 
 function saveTasks(){localStorage.setItem('tasks',taskList.innerHTML);}
 

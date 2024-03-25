@@ -7,17 +7,75 @@ function addTask(){
         alert("You must write something!");
     }else{
         let li = document.createElement('li');
-        li.innerHTML = `<p>${inputBox.value}</p><div class="buttons"><button class="edit"><i class="fa-solid fa-pen-to-square"></i></button><button class="delete"><i class="fa-solid fa-trash"></i></button></div>`;
-        //if the list contains something, insert new task before
-        if(taskList.firstChild){taskList.insertBefore(li,taskList.firstChild);}
-        //else just append
-        else{taskList.appendChild(li);}
+        let timestamp = document.createElement('div');
+        let currentTime = new Date().getTime(); //get date as int for sorting
+        li.dataset.timestamp = currentTime; //add timestamp attribute to task for sorting
+        timestamp.textContent = new Date(currentTime).toLocaleString(); //get formatted date
+        timestamp.classList.add('timestamp');
+        timestamp.style.opacity = '0'; //hide timestamp initially
+        li.innerHTML = `<p>${inputBox.value}</p>
+                        <div class="buttons">
+                            <button class="edit"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button class="delete"><i class="fa-solid fa-trash"></i></button>
+                        </div>`;
+        li.appendChild(timestamp);
+        if(taskList.firstChild){taskList.insertBefore(li,taskList.firstChild);} //if list contains something, insert new task before
+        else{taskList.appendChild(li);} //else just append
     }
     inputBox.value = '';
     saveTasks();
 }
 //So that you don't have to explicitly press the button if you want to add a task
 inputBox.addEventListener("keypress", (event)=>{if(event.key==="Enter") addTask();});
+
+//Show timestamp when hovering over task
+taskList.addEventListener('mouseover', (event) => {
+    const target = event.target.closest('li');
+    if (target) {
+        const timestamp = target.querySelector('.timestamp');
+        if (timestamp) {
+            timestamp.style.transition = 'opacity 0.45s';
+            timestamp.style.opacity = '1';
+        }
+    }
+});
+//Hide timestamp
+taskList.addEventListener('mouseout', (event) => {
+    const target = event.target.closest('li');
+    if (target) {
+        const timestamp = target.querySelector('.timestamp');
+        if (timestamp) {
+            timestamp.style.transition = 'opacity 0.25s';
+            timestamp.style.opacity = '0';
+        }
+    }
+});
+
+function sortTasksByTimestamp(order) {
+    console.log("Sorting tasks by timestamp. Order: " + order);
+
+    //Make array of tasks
+    const tasks = Array.from(taskList.querySelectorAll('li'));
+
+    tasks.sort((a, b) => {
+        const timestampA = a.dataset.timestamp;
+        const timestampB = b.dataset.timestamp;
+
+        if (order === 'newest' || order === 'default') {return timestampB - timestampA;} //tasks are sorted new -> old by default, but w/e
+        else if (order === 'oldest') {return timestampA - timestampB;} 
+    });
+
+    //Remove existing tasks from the list
+    while (taskList.firstChild) {taskList.removeChild(taskList.firstChild);}
+    //Replace with sorted tasks
+    tasks.forEach((task) => taskList.appendChild(task));
+}
+
+const filters = document.getElementById("filters");
+filters.addEventListener('change', () => {
+    const selectedOption = filters.value;
+    if (selectedOption === 'default' || selectedOption === 'newest' || selectedOption === 'oldest') {sortTasksByTimestamp(selectedOption);}
+});
 
 
 let initialTaskValue = '';
@@ -116,12 +174,16 @@ taskList.addEventListener("click", (event) => {
             break;
     }
 });
-
 //TODO (optional): add the added time && sorting by added time
 //TODO (optional): if clicked outside input box in edit mode -> cancel
 
-function saveTasks(){localStorage.setItem('tasks',taskList.innerHTML);}
+function saveTasks(){
+    localStorage.setItem('tasks',taskList.innerHTML);
+}
 
-function showTasks(){taskList.innerHTML = localStorage.getItem('tasks');}
+function showTasks(){
+    taskList.innerHTML = localStorage.getItem('tasks');
+}
+
 
 showTasks();

@@ -1,14 +1,18 @@
 const inputBox = document.getElementById("task-input");
 const taskList = document.getElementById("list-container");
 
+document.addEventListener('DOMContentLoaded', () => {
+    sortTasksByTimestamp('default'); //sort tasks by default (new -> old) on page load
+});
+
 function addTask(){
     //https://stackoverflow.com/questions/2662245/how-to-check-whether-the-input-text-field-contains-only-white-spaces <333
-    if(inputBox.value.match(/^\s*$/)){
-        alert("You must write something!");
-    }else{
+    if(inputBox.value.match(/^\s*$/)){alert("You must write something!");}
+    else{
         let li = document.createElement('li');
         let timestamp = document.createElement('div');
         let currentTime = new Date().getTime(); //get date as int for sorting
+        console.log('test');
         li.dataset.timestamp = currentTime; //add timestamp attribute to task for sorting
         timestamp.textContent = new Date(currentTime).toLocaleString(); //get formatted date
         timestamp.classList.add('timestamp');
@@ -19,6 +23,7 @@ function addTask(){
                             <button class="delete"><i class="fa-solid fa-trash"></i></button>
                         </div>`;
         li.appendChild(timestamp);
+
         if(taskList.firstChild){taskList.insertBefore(li,taskList.firstChild);} //if list contains something, insert new task before
         else{taskList.appendChild(li);} //else just append
     }
@@ -33,10 +38,8 @@ taskList.addEventListener('mouseover', (event) => {
     const target = event.target.closest('li');
     if (target) {
         const timestamp = target.querySelector('.timestamp');
-        if (timestamp) {
-            timestamp.style.transition = 'opacity 0.45s';
-            timestamp.style.opacity = '1';
-        }
+        timestamp.style.transition = 'opacity 0.45s';
+        timestamp.style.opacity = '1';
     }
 });
 //Hide timestamp
@@ -44,10 +47,8 @@ taskList.addEventListener('mouseout', (event) => {
     const target = event.target.closest('li');
     if (target) {
         const timestamp = target.querySelector('.timestamp');
-        if (timestamp) {
-            timestamp.style.transition = 'opacity 0.25s';
-            timestamp.style.opacity = '0';
-        }
+        timestamp.style.transition = 'opacity 0.25s';
+        timestamp.style.opacity = '0';
     }
 });
 
@@ -64,7 +65,6 @@ function sortTasksByTimestamp(order) {
         if (order === 'newest' || order === 'default') {return timestampB - timestampA;} //tasks are sorted new -> old by default, but w/e
         else if (order === 'oldest') {return timestampA - timestampB;} 
     });
-
     //Remove existing tasks from the list
     while (taskList.firstChild) {taskList.removeChild(taskList.firstChild);}
     //Replace with sorted tasks
@@ -76,7 +76,6 @@ filters.addEventListener('change', () => {
     const selectedOption = filters.value;
     if (selectedOption === 'default' || selectedOption === 'newest' || selectedOption === 'oldest') {sortTasksByTimestamp(selectedOption);}
 });
-
 
 let initialTaskValue = '';
 //TODO: reduce... redundancy...
@@ -114,12 +113,11 @@ function revertEditMode(listItem,buttonClicked){
     const deleteIcon = deleteButton.querySelector('i');
     const taskText = document.createElement('p');
     const taskInputField = listItem.querySelector('.edit-field');
-    const initialValue = taskInputField.dataset.initialValue;
     
     if(buttonClicked === 'save'){
         if(taskInputField.value.match(/^\s*$/)){
             alert("You must write something!");
-            return; //exit
+            return;
         }
         taskText.textContent = taskInputField.value;
         listItem.replaceChild(taskText, taskInputField);
@@ -174,7 +172,6 @@ taskList.addEventListener("click", (event) => {
             break;
     }
 });
-//TODO (optional): add the added time && sorting by added time
 //TODO (optional): if clicked outside input box in edit mode -> cancel
 
 function saveTasks(){
@@ -184,6 +181,5 @@ function saveTasks(){
 function showTasks(){
     taskList.innerHTML = localStorage.getItem('tasks');
 }
-
 
 showTasks();

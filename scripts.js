@@ -19,6 +19,8 @@ function addTask(){
 //So that you don't have to explicitly press the button if you want to add a task
 inputBox.addEventListener("keypress", (event)=>{if(event.key==="Enter") addTask();});
 
+
+let initialTaskValue = '';
 //TODO: reduce... redundancy...
 function toggleEditMode(listItem){
     const editButton = listItem.querySelector('.edit');
@@ -31,6 +33,7 @@ function toggleEditMode(listItem){
     taskInputField.classList.add('edit-field');
     taskInputField.type = 'text';
     taskInputField.value = taskText.textContent;
+    initialTaskValue = taskText.textContent;
     
     listItem.replaceChild(taskInputField, taskText);
     taskInputField.focus();
@@ -46,18 +49,34 @@ function toggleEditMode(listItem){
     deleteButton.classList.add('cancel');
 }
 
-function revertEditMode(listItem){
+function revertEditMode(listItem,buttonClicked){
     const editButton = listItem.querySelector('.save');
     const deleteButton = listItem.querySelector('.cancel');
     const editIcon = editButton.querySelector('i');
     const deleteIcon = deleteButton.querySelector('i');
     const taskText = document.createElement('p');
     const taskInputField = listItem.querySelector('.edit-field');
+    const initialValue = taskInputField.dataset.initialValue;
     
-
-    if(taskInputField.value.match(/^\s*$/)){alert("You must write something!");}
-    else{
+    if(buttonClicked === 'save'){
+        if(taskInputField.value.match(/^\s*$/)){
+            alert("You must write something!");
+            return; //exit
+        }
         taskText.textContent = taskInputField.value;
+        listItem.replaceChild(taskText, taskInputField);
+        editIcon.classList.remove('fa-check');
+        editIcon.classList.add('fa-pen-to-square');
+        editButton.classList.remove('save');
+        editButton.classList.add('edit');
+        
+        deleteIcon.classList.remove('fa-x');
+        deleteIcon.classList.add('fa-trash');
+        deleteButton.classList.remove('cancel');
+        deleteButton.classList.add('delete');
+        saveTasks();
+    }else if(buttonClicked === 'cancel'){
+        taskText.textContent = initialTaskValue; 
         listItem.replaceChild(taskText, taskInputField);
         editIcon.classList.remove('fa-check');
         editIcon.classList.add('fa-pen-to-square');
@@ -85,12 +104,11 @@ taskList.addEventListener("click", (event) => {
             toggleEditMode(listItem);
             break;
         case event.target.classList.contains('save') || event.target.parentElement.classList.contains('save'):
-            revertEditMode(listItem);
+            revertEditMode(listItem,'save');
             break;
-       //TODO: fix this vvv
-       /* case event.target.classList.contains('cancel') || event.target.parentElement.classList.contains('cancel'):
-            revertEditMode(listItem);
-            break;*/
+        case event.target.classList.contains('cancel') || event.target.parentElement.classList.contains('cancel'):
+            revertEditMode(listItem,'cancel');
+            break;
         case event.target.tagName === 'P':
             event.target.classList.toggle('strikethrough');
             break;

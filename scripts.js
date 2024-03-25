@@ -167,6 +167,7 @@ taskList.addEventListener("click", (event) => {
             break;
         case event.target.tagName === 'P':
             event.target.classList.toggle('strikethrough');
+            saveTasks();
             break;
         default:
             break;

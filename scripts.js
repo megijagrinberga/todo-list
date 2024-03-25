@@ -2,17 +2,20 @@ const inputBox = document.getElementById("task-input");
 const taskList = document.getElementById("list-container");
 
 document.addEventListener('DOMContentLoaded', () => {
-    sortTasksByTimestamp('default'); //sort tasks by default (new -> old) on page load
+    sortTasksByTimestamp('default'); // Sort tasks by default (new -> old) on page load
+    //Fix timestamps showing up on page reload due to calling saveTask(), when toggling strikethrough
+    let timestamps = document.querySelectorAll('.timestamp');
+    timestamps.forEach(timestamp => timestamp.style.opacity = '0');
 });
+
 
 function addTask(){
     //https://stackoverflow.com/questions/2662245/how-to-check-whether-the-input-text-field-contains-only-white-spaces <333
     if(inputBox.value.match(/^\s*$/)){alert("You must write something!");}
     else{
         let li = document.createElement('li');
-        let timestamp = document.createElement('div');
         let currentTime = new Date().getTime(); //get date as int for sorting
-        console.log('test');
+        const timestamp = document.createElement('div');
         li.dataset.timestamp = currentTime; //add timestamp attribute to task for sorting
         timestamp.textContent = new Date(currentTime).toLocaleString(); //get formatted date
         timestamp.classList.add('timestamp');
@@ -34,23 +37,30 @@ function addTask(){
 inputBox.addEventListener("keypress", (event)=>{if(event.key==="Enter") addTask();});
 
 //Show timestamp when hovering over task
+// Show timestamp when hovering over task
 taskList.addEventListener('mouseover', (event) => {
     const target = event.target.closest('li');
     if (target) {
         const timestamp = target.querySelector('.timestamp');
-        timestamp.style.transition = 'opacity 0.45s';
-        timestamp.style.opacity = '1';
+        if (timestamp) {
+            timestamp.style.transition = 'opacity 0.25s';
+            timestamp.style.opacity = '1';
+        }
     }
 });
-//Hide timestamp
+
+// Hide timestamp
 taskList.addEventListener('mouseout', (event) => {
     const target = event.target.closest('li');
     if (target) {
         const timestamp = target.querySelector('.timestamp');
-        timestamp.style.transition = 'opacity 0.25s';
-        timestamp.style.opacity = '0';
+        if (timestamp) {
+            timestamp.style.transition = 'opacity 0.15s';
+            timestamp.style.opacity = '0';
+        }
     }
 });
+
 
 function sortTasksByTimestamp(order) {
     console.log("Sorting tasks by timestamp. Order: " + order);

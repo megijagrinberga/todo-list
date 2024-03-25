@@ -152,3 +152,18 @@ li p{
     color: #DB3069;
     font-size: 18px;
 }
+
+.timestamp{
+    position: absolute;
+    text-align: center;
+    margin-left: 435px;
+    padding: 5px;
+    width: 175px;
+    height: 30px;
+    font-size: 14px;
+    font-weight: normal;
+    color:#3c3c3b;
+    background-color: #bebebe;
+    border-radius: 5px;
+    box-shadow: 0 2px 3px rgba(60,60,59,0.75);
+}

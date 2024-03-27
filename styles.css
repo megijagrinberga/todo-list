@@ -20,7 +20,7 @@
     max-width: 750px;
     padding-bottom: 20px;
     background: rgba(255,255,255,0.85);
-    margin: 100px auto 100px auto;
+    margin: 100px auto;
     border-radius: 20px;
 }
 
@@ -66,9 +66,7 @@ h1 span{
     font-weight: normal;
 }
 
-#filters, #add-btn{
-    cursor: pointer;
-}
+#filters, #add-btn{cursor: pointer;}
 
 option{
     font-weight: normal;
@@ -79,6 +77,8 @@ option{
     border-bottom-left-radius: 0;
     background-color: transparent;
 }
+
+::placeholder, #task-input{color:#e77d5a;}
 
 #add-btn{
     color: #FFFF;
@@ -124,7 +124,7 @@ li p{
 .edit, .delete, .save, .cancel{
     border: none;
     outline: none;
-    background-color: #1446A0;
+    background-color: #DB3069;
     font-size: 14px;
     color: white;
     border-radius: 10px;
@@ -133,10 +133,7 @@ li p{
     height: 30px;
     max-height: 30px;
     cursor: pointer;
-}
-
-.edit:hover, .delete:hover, .save:hover, .cancel:hover{
-    background-color:#DB3069;
+    &:hover{background-color: #1446A0;}
 }
 
 .strikethrough{
